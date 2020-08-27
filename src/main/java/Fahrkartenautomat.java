@@ -21,7 +21,7 @@ class Fahrkartenautomat {
         // Den zu zahlenden Betrag ermittelt normalerweise der Automat
         // aufgrund der gewählten Fahrkarte(n).
         // -----------------------------------
-        System.out.print("Zu zahlender Betrag (EURO): ");
+        System.out.print("Zu zahlender Betrag (Euro): ");
         zuZahlenderBetrag = tastatur.nextDouble();
 
         // Geldeinwurf
@@ -57,32 +57,32 @@ class Fahrkartenautomat {
 
             while (rueckgabebetrag >= 2.0) // 2 EURO-Münzen
             {
-                System.out.println("2 EURO");
+                System.out.println("2 Euro");
                 rueckgabebetrag -= 2.0;
             }
             while (rueckgabebetrag >= 1.0) // 1 EURO-Münzen
             {
-                System.out.println("1 EURO");
+                System.out.println("1 Euro");
                 rueckgabebetrag -= 1.0;
             }
             while (rueckgabebetrag >= 0.5) // 50 CENT-Münzen
             {
-                System.out.println("50 CENT");
+                System.out.println("50 Cent");
                 rueckgabebetrag -= 0.5;
             }
             while (rueckgabebetrag >= 0.2) // 20 CENT-Münzen
             {
-                System.out.println("20 CENT");
+                System.out.println("20 Cent");
                 rueckgabebetrag -= 0.2;
             }
             while (rueckgabebetrag >= 0.1) // 10 CENT-Münzen
             {
-                System.out.println("10 CENT");
+                System.out.println("10 Cent");
                 rueckgabebetrag -= 0.1;
             }
             while (rueckgabebetrag >= 0.05)// 5 CENT-Münzen
             {
-                System.out.println("5 CENT");
+                System.out.println("5 Cent");
                 rueckgabebetrag -= 0.05;
             }
         }

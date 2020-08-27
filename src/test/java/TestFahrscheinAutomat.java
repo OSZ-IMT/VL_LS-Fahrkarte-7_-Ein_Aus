@@ -1,16 +1,26 @@
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.PrintStream;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class TestFahrscheinAutomat {
 
+    // backup System.out to restore it later
     private PrintStream originalOut;
     private ByteArrayOutputStream bos;
+
+    // backup System.in to restore it later
+    private InputStream sysInBackup;
+    private ByteArrayInputStream in;
+
+    private int version;
 
     @Before
     public void InitPrintStream(){
@@ -18,70 +28,102 @@ public class TestFahrscheinAutomat {
         originalOut = System.out;
         bos = new ByteArrayOutputStream();
         System.setOut(new PrintStream(bos));
+
+        sysInBackup = System.in; // backup System.in to restore it later
     }
 
     @After
     public void EndPrintStream(){
         // undo the binding in System
         System.setOut(originalOut);
+
+        // reset System.in to its original
+        System.setIn(sysInBackup);
+    }
+
+    /**
+     * Helpermethod for inputs
+     * @param args
+     */
+    private void SetTestData(String... args) {
+        in = new ByteArrayInputStream(String.join(System.lineSeparator(), args).getBytes());
+        System.setIn(in);
+    }
+
+    /**
+     * Helpermethod to check outputs
+     * @param check
+     */
+    private void CheckTestData(String check) {
+        try {
+            assertTrue(bos.toString().contains(check));
+        } catch (Throwable t) {
+            //print exact program
+            assertEquals(check,bos.toString());
+        }
     }
 
     @Test
-    public void testAufgabe1()
-    {
+    public void testKomma10Zahlen() {
+
+        SetTestData("1","3","2","2");
 
         // action
-        Ausgabenformatierung.Aufgabe1();
+        Fahrkartenautomat.main(null);
 
         // assertion
-        assertTrue(bos.toString().startsWith("   **   "));
-        assertTrue(bos.toString().contains("*      *"));
-
+        CheckTestData("Noch zu zahlen: 1.00 Euro");
     }
 
     @Test
-    public void testAufgabe2()
-    {
+    public void testKomma05Zahlen() {
+
+        SetTestData("1,05","3","2","2");
 
         // action
-        Ausgabenformatierung.Aufgabe2();
+        Fahrkartenautomat.main(null);
 
         // assertion
-        assertTrue(bos.toString().contains("0!   =                   =   1"));
-        assertTrue(bos.toString().contains("1!   = 1                 =   1"));
-        assertTrue(bos.toString().contains("2!   = 1 * 2             =   2"));
-        assertTrue(bos.toString().contains("3!   = 1 * 2 * 3         =   6"));
-        assertTrue(bos.toString().contains("4!   = 1 * 2 * 3 * 4     =  24"));
-        assertTrue(bos.toString().contains("5!   = 1 * 2 * 3 * 4 * 5 = 120"));
-
+        CheckTestData("Noch zu zahlen: 1.15 Euro");
     }
 
     @Test
-    public void testAufgabe3Head()
-    {
+    public void testKomma10Rueckgabe() {
+
+        SetTestData("1","3","2","2");
 
         // action
-        Ausgabenformatierung.Aufgabe3();
+        Fahrkartenautomat.main(null);
 
         // assertion
-        assertTrue(bos.toString().contains("Fahrenheit  |  Celsius"));
-
+        //CheckTestData("Noch zu zahlen: 1.00 €");
+        CheckTestData("he von 1.00 Euro");
     }
 
     @Test
-    public void testAufgabe3Table()
-    {
+    public void testKomma05Rueckgabe() {
+
+        SetTestData("1,05","3","2","2");
 
         // action
-        Ausgabenformatierung.Aufgabe3();
+        Fahrkartenautomat.main(null);
 
         // assertion
-        assertTrue(bos.toString().contains("----------------------"));
-        assertTrue(bos.toString().contains("-20         |   -28.89"));
-        assertTrue(bos.toString().contains("-10         |   -23.33"));
-        assertTrue(bos.toString().contains("+0          |   -17.78"));
-        assertTrue(bos.toString().contains("20          |    -6.67"));
-        assertTrue(bos.toString().contains("30          |    -1.11"));
-
+        CheckTestData("he von 1.15 Euro");
+        //CheckTestData("Noch zu zahlen: 0.95");
     }
+
+    @Test
+    public void testAnzahlTickets() {
+
+        SetTestData("1","3","2","2");
+
+        // action
+        Fahrkartenautomat.main(null);
+
+        // assertion
+        CheckTestData("Anzahl der Tickets:");
+        CheckTestData("Noch zu zahlen: 3.00 Euro");
+    }
+
 }
