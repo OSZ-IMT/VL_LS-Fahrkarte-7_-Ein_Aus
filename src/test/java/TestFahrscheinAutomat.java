@@ -1,5 +1,4 @@
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,9 +17,6 @@ public class TestFahrscheinAutomat {
 
     // backup System.in to restore it later
     private InputStream sysInBackup;
-    private ByteArrayInputStream in;
-
-    private int version;
 
     @Before
     public void InitPrintStream(){
@@ -43,16 +39,16 @@ public class TestFahrscheinAutomat {
 
     /**
      * Helpermethod for inputs
-     * @param args
+     * @param args, string to check
      */
     private void SetTestData(String... args) {
-        in = new ByteArrayInputStream(String.join(System.lineSeparator(), args).getBytes());
+        ByteArrayInputStream in = new ByteArrayInputStream(String.join(System.lineSeparator(), args).getBytes());
         System.setIn(in);
     }
 
     /**
      * Helpermethod to check outputs
-     * @param check
+     * @param check, string to check
      */
     private void CheckTestData(String check) {
         try {
@@ -78,7 +74,7 @@ public class TestFahrscheinAutomat {
     @Test
     public void testKomma05Zahlen() {
 
-        SetTestData("1,05","3","2","2");
+        SetTestData("1.05","3","2","2");
 
         // action
         Fahrkartenautomat.main(null);
@@ -103,7 +99,7 @@ public class TestFahrscheinAutomat {
     @Test
     public void testKomma05Rueckgabe() {
 
-        SetTestData("1,05","3","2","2");
+        SetTestData("1.05","3","2","2");
 
         // action
         Fahrkartenautomat.main(null);
